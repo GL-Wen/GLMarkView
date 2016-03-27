@@ -1,6 +1,7 @@
 该控件依赖Masonry自动布局、UIImageView+AFNetworking图片下载框架
 
 1.#import "GLMarkView.h"
+
 2.创建标签视图对象并布局
     self.markView = [[GLMarkView alloc] initWithMarkViewMargin:4];
     [self.view addSubview:self.markView];
