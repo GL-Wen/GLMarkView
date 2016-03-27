@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "GLMarkView.h"
 
 @interface ViewController ()
+
+@property (nonatomic, strong) GLMarkView *markView;
 
 @end
 
@@ -17,11 +20,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.markView = [[GLMarkView alloc] initWithMarkViewMargin:4];
+    [self.view addSubview:self.markView];
+    
+    __weak typeof(UIView *) weakView = self.view;
+    
+    [self.markView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakView).offset(10);
+        make.top.equalTo(weakView).offset(100);
+        make.height.equalTo(@20);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)btnClick:(UIButton *)sender {
+    //文本标签
+    NSArray *titleMarkArray = @[@"标签1", @"标签2", @"标签3", @"标签4"];
+    
+    //图片标签
+    NSArray *imageMarkArray = @[@"http://static.qccr.com/storetag/tag/icon_opening@2x.png"];
+    
+    NSMutableArray *markModelArray = [NSMutableArray array];
+    
+    for (NSString *titleMark in titleMarkArray) {
+        GLMarkModel *markModel = [GLMarkModel new];
+        markModel.markText       = titleMark;
+        markModel.markTextInsets = UIEdgeInsetsMake(1, 2, 1, 2);
+        
+        [markModelArray addObject:markModel];
+    }
+    
+    for (NSString *imageMark in imageMarkArray) {
+        GLMarkModel *markModel = [GLMarkModel new];
+        markModel.markUrl    = imageMark;
+        markModel.isWebImage = YES;
+        
+        [markModelArray addObject:markModel];
+    }
+    
+    self.markView.markArray = markModelArray;
 }
 
 @end
